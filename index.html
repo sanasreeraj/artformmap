@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Art History Map by Sana Sreeraj</title>
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet Control Geocoder CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <!-- Custom CSS -->
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 32px;
+            color: #444;
+            letter-spacing: 1.5px;
+        }
+
+        #map {
+            width: 90%;
+            height: 600px;
+            margin: 20px auto;
+            border: 2px solid #ccc;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Popup content customization */
+        .leaflet-popup-content h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .leaflet-popup-content img {
+            display: block;
+            margin: 0 auto 10px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .leaflet-popup-content p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .leaflet-control-geocoder-icon {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Indian Art History Map</h1>
+    <div id="map"></div>
+
+    <!-- Leaflet.js JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- Leaflet Control Geocoder JavaScript -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([20.5937, 78.9629], 5); // Centered on India
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Define custom icons
+        var templeIcon = L.icon({
+            iconUrl: 'https://img.icons8.com/ios-filled/50/000000/temple.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
+        var caveIcon = L.icon({
+            iconUrl: 'https://img.icons8.com/ios-filled/50/000000/cave.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
+        var palaceIcon = L.icon({
+            iconUrl: 'https://img.icons8.com/ios-filled/50/000000/palace.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
+        var villageIcon = L.icon({
+            iconUrl: 'https://img.icons8.com/ios-filled/50/000000/village.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32]
+        });
+
+        // Function to create a marker with a popup
+        function createMarker(lat, lon, title, description, imageUrls, icon) {
+            var marker = L.marker([lat, lon], { icon: icon }).addTo(map);
+            var imagesHtml = imageUrls.map(url => `<img src="${url}" alt="${title}">`).join('');
+            var popupContent = `<h3>${title}</h3>
+                                ${imagesHtml}
+                                <p>${description}</p>`;
+            marker.bindPopup(popupContent);
+        }
+
+        // Add markers with custom icons, detailed descriptions, and multiple images
+        createMarker(19.8876, 86.0945, 'Konark Temple, Konark',
+            'The Konark Sun Temple is a 13th-century temple dedicated to the Sun God, Surya. It is renowned for its exquisite and elaborate carvings depicting various deities and mythological scenes. The temple is also known for its chariot-shaped structure and intricate stone wheels.',
+            [
+                './konark.jpg'
+            ],
+            templeIcon);
+
+        createMarker(10.7828, 79.1318, 'Brihadeshwara Temple, Thanjavur',
+            'The Brihadeshwara Temple, also known as the Big Temple, was built by Raja Raja Chola I in the 11th century. It is a UNESCO World Heritage Site and is famed for its towering vimana, massive granite dome, and the intricate frescoes depicting the Chola dynasty’s history.',
+            [
+                './briha.jpg'
+            ],
+            templeIcon);
+
+        createMarker(20.5510, 78.5050, 'Ajanta Ellora Caves, Maharashtra',
+            'The Ajanta and Ellora Caves are a collection of rock-cut Buddhist, Jain, and Hindu temples and monasteries carved into the Western Ghats. The Ajanta Caves are renowned for their ancient paintings, while the Ellora Caves are noted for their impressive Kailasa temple, a single monolithic rock excavation.',
+            [
+                './ajanta.jpg'
+            ],
+            caveIcon);
+
+        createMarker(26.9239, 75.8267, 'Hawa Mahal, Jaipur',
+            'Hawa Mahal, or the Palace of Winds, was built by Maharaja Sawai Pratap Singh in 1799. This five-story palace is known for its unique façade with numerous small windows, designed to allow royal ladies to observe street life and festivals without being seen.',
+            [
+                './hawa.jpg'
+            ],
+            palaceIcon);
+
+        createMarker(9.9195, 78.1191, 'Meenakshi Amman Temple, Madurai',
+            'The Meenakshi Amman Temple is a historic Hindu temple dedicated to Goddess Meenakshi. The temple is known for its towering gopurams (gateway towers) adorned with colorful sculptures. It is a fine example of Dravidian architecture and a major pilgrimage site in South India.',
+            [
+                './meena.jpg'
+            ],
+            templeIcon);
+
+        createMarker(24.8318, 79.9199, 'Khajuraho, Madhya Pradesh',
+            'The Khajuraho Group of Monuments consists of a group of Hindu and Jain temples famous for their stunning sculptures and elaborate architectural details. The temples, built between 950 and 1050 AD, are renowned for their erotic sculptures and represent a high point of Indian temple architecture.',
+            [
+               './khajuraho.jpeg'
+            ],
+            templeIcon);
+
+        createMarker(23.6784, 87.6831, 'Shantiniketan, West Bengal',
+            'Shantiniketan was founded by Rabindranath Tagore as an institution for higher learning and is known for its association with the Bengal School of Art. The town is celebrated for its lush green surroundings and artistic environment, which have inspired many artists and poets.',
+            [
+                './shantiniketan.jpeg'
+            ],
+            villageIcon);
+
+        createMarker(12.8667, 80.2250, 'Cholamandal Artists\' Village, Tamil Nadu',
+            'Cholamandal Artists\' Village is a unique artists’ commune founded in 1966. It is known for its vibrant modern art and is a hub for contemporary artists in South India. The village fosters collaboration and creativity among artists and showcases their work in an open, community-driven environment.',
+            [
+               './chola.jpg'
+            ],
+            villageIcon);
+
+        // Additional locations
+        createMarker(27.1767, 78.0081, 'Taj Mahal, Agra',
+            'The Taj Mahal is an ivory-white marble mausoleum built by Mughal Emperor Shah Jahan in memory of his wife Mumtaz Mahal. Known for its stunning architecture and intricate inlay work, it is a UNESCO World Heritage Site and one of the New Seven Wonders of the World.',
+            [
+                './tajmahal.png'
+            ],
+            palaceIcon);
+
+        createMarker(17.3850, 78.4867, 'Charminar, Hyderabad',
+            'Charminar is a historical monument and mosque located in the heart of Hyderabad. Built in 1591, it is an iconic symbol of the city and a notable example of Islamic architecture in India, featuring intricate stucco decorations and four grand arches.',
+            [
+                './charminar.jpg'
+            ],
+            palaceIcon);
+
+        createMarker(28.6139, 77.2090, 'Red Fort, Delhi',
+            'The Red Fort, a UNESCO World Heritage Site, is a 17th-century fortification located in the old city of Delhi. It served as the main residence of the Mughal emperors for around 200 years and is known for its massive red sandstone walls and beautiful Mughal architecture.',
+            [
+                './redfort.jpeg'
+            ],
+            palaceIcon);
+
+        createMarker(12.2958, 76.6394, 'Mysore Palace, Mysuru',
+            'Mysore Palace, also known as Amba Vilas Palace, is a historic royal residence located in Mysuru. The palace, with its Indo-Saracenic architecture, is famed for its lavish interiors and grand Durbar Hall. It is a major tourist attraction and an important symbol of the erstwhile Wadiyar dynasty.',
+            [
+                './mysore.jpeg'
+            ],
+            palaceIcon);
+
+        // Adding a search control to the map
+        L.Control.geocoder().addTo(map);
+    </script>
+</body>
+</html>
